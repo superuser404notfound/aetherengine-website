@@ -1,6 +1,6 @@
 ---
 title: AetherEngine
-description: A media player engine for Apple platforms.
+description: A media player engine for Apple platforms. FFmpeg demuxes, VideoToolbox decodes, AVPlayer handles Dolby Atmos.
 template: splash
 hero:
   tagline: A media player engine for Apple platforms. FFmpeg demuxes, VideoToolbox decodes, AVPlayer handles Dolby Atmos.
@@ -17,4 +17,36 @@ hero:
       variant: minimal
 ---
 
-Welcome to the AetherEngine documentation.
+import { Card, CardGrid } from '@astrojs/starlight/components';
+import VersionPill from '../../components/VersionPill.astro';
+
+<VersionPill />
+
+## What it handles
+
+<CardGrid>
+  <Card title="Real HDR & Dolby Vision" icon="seti:video">
+    HDR10, HDR10+ (per-frame ST 2094-40), Dolby Vision (P5, P7 as single-layer 8.1, P8.1, P8.4, AV1 P10.x), and HLG, with full metadata and automatic Match Content.
+  </Card>
+  <Card title="Dolby Atmos" icon="seti:audio">
+    EAC3+JOC stream-copied on every route (HDMI MAT 2.0, AirPods spatial, Bluetooth downmix), plus 5.1 / 7.1 surround with correct channel layout.
+  </Card>
+  <Card title="Broad codec coverage" icon="seti:default">
+    H.264, HEVC, and AV1 via VideoToolbox; AV1 without hardware, VP9, MPEG-2, and VC-1 via the software dav1d path. MKV, MP4, WebM, MPEG-TS, AVI, and more.
+  </Card>
+  <Card title="Audio-only path" icon="seti:music">
+    A lean pipeline with no video machinery and system Now-Playing on tvOS and iOS, driven by a single LoadOptions flag.
+  </Card>
+  <Card title="Live TV & DVR" icon="seti:clock">
+    Unbounded live with optional timeshift, and direct HLS ingest with AES-128 clear-key and SSAI ad-pod handling.
+  </Card>
+  <Card title="You ship the UI" icon="seti:plan">
+    No AVPlayerViewController, no opinionated controls, no analytics. Bind the view, call play(), read the published state.
+  </Card>
+</CardGrid>
+
+## Just want to watch?
+
+AetherEngine is the engine, not an app. If you are here to actually watch something, [Sodalite](https://sodalite.superuser404.de) is the native Apple TV client for Jellyfin built on top of it. This site is for developers integrating the engine.
+
+[Read the introduction](/guides/introduction/) to get started.

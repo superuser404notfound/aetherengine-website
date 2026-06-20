@@ -1,0 +1,25 @@
+---
+import version from '../data/version.json';
+const repo = 'superuser404notfound/AetherEngine';
+const label = version?.tag ? `Latest ${version.tag}` : 'Releases';
+const href = version?.url ?? `https://github.com/${repo}/releases`;
+---
+<a class="version-pill" href={href} data-version-pill data-repo={repo}>{label}</a>
+
+<script>
+  const el = document.querySelector('[data-version-pill]');
+  if (el) {
+    const repo = el.getAttribute('data-repo');
+    fetch(`https://api.github.com/repos/${repo}/releases/latest`, {
+      headers: { Accept: 'application/vnd.github+json' },
+    })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (d && d.tag_name) {
+          el.textContent = `Latest ${d.tag_name}`;
+          if (d.html_url) el.setAttribute('href', d.html_url);
+        }
+      })
+      .catch(() => { /* keep the build-time value */ });
+  }
+</script>
