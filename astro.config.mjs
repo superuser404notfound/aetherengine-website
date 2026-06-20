@@ -19,6 +19,14 @@ export default defineConfig({
       ],
       sidebar: [
         {
+          label: 'Guides',
+          items: [
+            { slug: 'guides/introduction' },
+            { slug: 'guides/quick-start' },
+            { slug: 'guides/installation' },
+          ],
+        },
+        {
           label: 'Reference',
           items: [
             { slug: 'reference/formats' },
