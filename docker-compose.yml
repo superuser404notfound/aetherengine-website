@@ -1,0 +1,8 @@
+services:
+  web:
+    build: .
+    container_name: aetherengine-website
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    # Pangolin proxies aetherengine.superuser404.de -> this container on :8080.
