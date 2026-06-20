@@ -1,0 +1,23 @@
+{
+  "name": "aetherengine-website",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "engines": { "node": ">=20.0.0" },
+  "scripts": {
+    "sync": "node scripts/sync-docs.mjs",
+    "predev": "npm run sync",
+    "dev": "astro dev",
+    "prebuild": "npm run sync",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "^0.34.0",
+    "astro": "^5.13.0",
+    "sharp": "^0.34.0"
+  },
+  "devDependencies": {
+    "starlight-links-validator": "^0.18.0"
+  }
+}

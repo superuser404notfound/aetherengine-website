@@ -1,0 +1,28 @@
+/* Blue accent, consistent with Sodalite and the AetherEngine badges. */
+:root {
+  --sl-color-accent-low: #16213e;
+  --sl-color-accent: #4a6eff;
+  --sl-color-accent-high: #c2cdff;
+}
+:root[data-theme='light'] {
+  --sl-color-accent-low: #d8e0ff;
+  --sl-color-accent: #2d4cd6;
+  --sl-color-accent-high: #16213e;
+}
+
+/* Version pill on the landing page. */
+.version-pill {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.3rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid var(--sl-color-gray-5);
+  background: var(--sl-color-gray-6);
+  color: var(--sl-color-white);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.version-pill:hover {
+  border-color: var(--sl-color-accent);
+}
