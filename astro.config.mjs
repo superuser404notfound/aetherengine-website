@@ -17,7 +17,16 @@ export default defineConfig({
         { tag: 'meta', attrs: { property: 'og:image', content: 'https://aetherengine.superuser404.de/og.png' } },
         { tag: 'meta', attrs: { name: 'twitter:card', content: 'summary_large_image' } },
       ],
-      sidebar: [],
+      sidebar: [
+        {
+          label: 'Reference',
+          items: [
+            { slug: 'reference/formats' },
+            { slug: 'reference/architecture' },
+            { slug: 'reference/cli' },
+          ],
+        },
+      ],
     }),
   ],
 });
