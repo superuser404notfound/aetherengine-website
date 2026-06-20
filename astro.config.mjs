@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import starlightLinksValidator from 'starlight-links-validator';
 
 export default defineConfig({
   site: 'https://aetherengine.superuser404.de',
@@ -7,6 +8,7 @@ export default defineConfig({
     starlight({
       title: 'AetherEngine',
       description: 'A media player engine for Apple platforms. FFmpeg demuxes, VideoToolbox decodes, AVPlayer handles Dolby Atmos.',
+      plugins: [starlightLinksValidator()],
       logo: { src: './src/assets/logo.png', alt: 'AetherEngine' },
       favicon: '/favicon.png',
       customCss: ['./src/styles/custom.css'],

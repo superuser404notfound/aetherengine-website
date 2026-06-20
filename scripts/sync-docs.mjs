@@ -31,6 +31,9 @@ const LINK_RULES = [
   [/\(architecture\.md/g, '(/reference/architecture/'],
   [/\(cli\.md/g, '(/reference/cli/'],
   [/\((?:\.\.\/)?CHANGELOG\.md/g, '(/project/changelog/'],
+  // README section anchors that live on their own pages here. Must precede
+  // the generic README rule so the whole "README.md#anchor" is consumed.
+  [/\((?:\.\.\/)?README\.md#stability-and-versioning/g, '(/project/stability-versioning/'],
   [/\((?:\.\.\/)?README\.md/g, '(/guides/introduction/'],
 ];
 
