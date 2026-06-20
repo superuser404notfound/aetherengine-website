@@ -34,6 +34,14 @@ export default defineConfig({
             { slug: 'reference/cli' },
           ],
         },
+        {
+          label: 'Project',
+          items: [
+            { slug: 'project/stability-versioning' },
+            { slug: 'project/changelog' },
+            { slug: 'project/license' },
+          ],
+        },
       ],
     }),
   ],
