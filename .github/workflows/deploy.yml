@@ -1,0 +1,88 @@
+name: Build and Deploy
+
+# Builds the static site (which fetches docs from AetherEngine main at build
+# time) and pushes the image to GHCR. Watchtower on the VPS watches the
+# `latest` tag and redeploys when the digest changes.
+#
+# Triggers:
+# - push to main / workflow_dispatch: the website's own source changed.
+# - repository_dispatch (engine-docs-updated): AetherEngine main changed its
+#   docs and dispatched here with the new SHA (see AetherEngine's
+#   notify-website.yml). This is the path that keeps the docs in sync.
+# - schedule: daily safety net in case a dispatch is ever missed.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  repository_dispatch:
+    types: [engine-docs-updated]
+  schedule:
+    - cron: "0 5 * * *"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository_owner }}/aetherengine-website
+
+jobs:
+  build-and-push:
+    name: Build & push image to GHCR
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Resolve AetherEngine docs SHA
+        id: engine
+        run: |
+          set -euo pipefail
+          # A repository_dispatch carries the engine SHA in its payload; for
+          # push / manual / scheduled runs, resolve the current main SHA so the
+          # build cache busts whenever upstream docs have moved.
+          sha="${{ github.event.client_payload.sha }}"
+          if [ -z "$sha" ]; then
+            sha=$(git ls-remote https://github.com/superuser404notfound/AetherEngine.git main | cut -f1)
+          fi
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          echo "AetherEngine docs SHA: $sha" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v4
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=sha,prefix=sha-,format=short
+            type=ref,event=branch
+
+      - name: Build and push
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          platforms: linux/amd64
+          push: true
+          build-args: |
+            ENGINE_SHA=${{ steps.engine.outputs.sha }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

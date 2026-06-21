@@ -1,8 +1,16 @@
 services:
   web:
-    build: .
+    # Pull the image CI built and pushed to GHCR; the build itself runs in
+    # GitHub Actions (.github/workflows/deploy.yml), not on the VPS. Watchtower
+    # watches the `latest` tag and redeploys this container when the digest
+    # changes (a new website commit, or an AetherEngine docs change that
+    # dispatched a rebuild). Local development uses `npm run dev`, not Docker.
+    image: ghcr.io/superuser404notfound/aetherengine-website:latest
     container_name: aetherengine-website
     restart: unless-stopped
+    pull_policy: always
     ports:
       - "8080:8080"
     # Pangolin proxies aetherengine.superuser404.de -> this container on :8080.
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
