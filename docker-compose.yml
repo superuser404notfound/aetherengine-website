@@ -1,16 +1,35 @@
 services:
   web:
-    # Pull the image CI built and pushed to GHCR; the build itself runs in
-    # GitHub Actions (.github/workflows/deploy.yml), not on the VPS. Watchtower
-    # watches the `latest` tag and redeploys this container when the digest
-    # changes (a new website commit, or an AetherEngine docs change that
-    # dispatched a rebuild). Local development uses `npm run dev`, not Docker.
+    # Image is built & pushed to GHCR by GitHub Actions (.github/workflows/deploy.yml);
+    # the VPS only PULLS — never builds locally. Watchtower watches the `latest` tag and
+    # redeploys this container when the digest changes.
+    #
+    # Pangolin fronts TLS/hostname/WAF and proxies aetherengine.superuser404.de to this
+    # container BY NAME on the shared `pangolin` network (route target
+    # http://aetherengine-web:8080). Therefore: join `pangolin`, publish NO host port
+    # (host :8080 is already taken by CrowdSec), and keep the container name in sync with
+    # the Pangolin resource target.
     image: ghcr.io/superuser404notfound/aetherengine-website:latest
-    container_name: aetherengine-website
+    container_name: aetherengine-web
     restart: unless-stopped
     pull_policy: always
-    ports:
-      - "8080:8080"
-    # Pangolin proxies aetherengine.superuser404.de -> this container on :8080.
+    networks:
+      - pangolin
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          memory: 128m
+        reservations:
+          memory: 32m
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
+
+networks:
+  pangolin:
+    external: true

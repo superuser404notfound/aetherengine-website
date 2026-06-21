@@ -39,7 +39,7 @@ The docs are fetched at build time from AetherEngine `main`, so the build layer 
 docker compose up -d
 ```
 
-Point a Pangolin resource for `aetherengine.superuser404.de` at the container on port 8080. A single Watchtower instance on the host (shared with the other sites) handles redeploys; this service opts in via the `com.centurylinklabs.watchtower.enable=true` label. If the GHCR package is private, run `docker login ghcr.io` once on the VPS; making the package public avoids that.
+The container joins the shared external `pangolin` network and publishes **no host port** (host `:8080` is taken by CrowdSec). Pangolin/Traefik reach it **by container name** (`aetherengine-web`); the Pangolin resource for `aetherengine.superuser404.de` targets `http://aetherengine-web:8080`, so the `container_name` must stay in sync with that route. A single Watchtower instance on the host (shared with the other sites) handles redeploys; this service opts in via the `com.centurylinklabs.watchtower.enable=true` label. If the GHCR package is private, run `docker login ghcr.io` once on the VPS; making the package public avoids that.
 
 ### Cross-repo trigger token
 
