@@ -6,10 +6,10 @@ description: Add AetherEngine with Swift Package Manager, plus the optional SMB 
 Add AetherEngine with Swift Package Manager:
 
 ```swift
-.package(url: "https://github.com/superuser404notfound/AetherEngine", from: "3.11.6")
+.package(url: "https://github.com/superuser404notfound/AetherEngine", from: "4.11.0")
 ```
 
-Pin to `.upToNextMinor(from: "3.11.6")` for teams that prefer to opt into minor bumps explicitly. FFmpegBuild is a transitive dependency and is resolved automatically.
+Pin to `.upToNextMinor(from: "4.11.0")` for teams that prefer to opt into minor bumps explicitly. FFmpegBuild is a transitive dependency and is resolved automatically.
 
 ## Requirements
 

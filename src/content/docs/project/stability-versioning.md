@@ -12,7 +12,7 @@ AetherEngine uses [Semantic Versioning](https://semver.org). The public API surf
 `internal` types are not part of the contract.
 
 ```swift
-.package(url: "https://github.com/superuser404notfound/AetherEngine", from: "3.11.6")
+.package(url: "https://github.com/superuser404notfound/AetherEngine", from: "4.11.0")
 ```
 
-Pin to `.upToNextMinor(from: "3.11.6")` for stricter teams that prefer to opt into minor bumps explicitly. The full release history is on the [Changelog](/project/changelog/) page.
+Pin to `.upToNextMinor(from: "4.11.0")` for stricter teams that prefer to opt into minor bumps explicitly. The full release history is on the [Changelog](/project/changelog/) page.
