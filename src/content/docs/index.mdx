@@ -17,10 +17,23 @@ hero:
       variant: minimal
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 import VersionPill from '../../components/VersionPill.astro';
+import usedBy from '../../data/used-by.json';
 
 <VersionPill />
+
+## Used by
+
+Apps shipping AetherEngine today:
+
+<CardGrid>
+  {usedBy.entries.map((app) => (
+    <LinkCard title={app.name} href={app.url} description={app.description} />
+  ))}
+</CardGrid>
+
+Shipping something on AetherEngine? [Submit it](https://github.com/superuser404notfound/AetherEngine/issues/new?template=used-by-submission.yml) to get listed here and in the README.
 
 ## What it handles
 

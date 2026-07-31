@@ -1,6 +1,7 @@
 // Fetches AetherEngine docs at build time, adds Starlight frontmatter,
-// rewrites relative repo links to internal routes, and records the latest
-// release tag. Run via `npm run sync` (wired as predev + prebuild).
+// rewrites relative repo links to internal routes, records the latest
+// release tag, and mirrors the README's Used by list.
+// Run via `npm run sync` (wired as predev + prebuild).
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -74,6 +75,30 @@ async function syncDocs() {
   }
 }
 
+// The README's Used by list is maintained by the used-by-add workflow between
+// HTML markers. Mirror it so an approved submission lands on the site too.
+async function syncUsedBy() {
+  const readme = await fetchText(`${RAW}/README.md`); // throws -> fatal
+  const block = readme.match(/<!--\s*used-by:start\s*-->([\s\S]*?)<!--\s*used-by:end\s*-->/);
+  if (!block) throw new Error('README.md: used-by markers not found');
+
+  const entries = [];
+  for (const line of block[1].split('\n')) {
+    const m = line.match(/^\s*-\s*\[([^\]]+)\]\(([^)]+)\)\s*:\s*(.+?)\s*$/);
+    if (!m) continue;
+    const [, name, url, rawDesc] = m;
+    const desc = rawDesc.replace(/\.*$/, '');
+    entries.push({
+      name,
+      url,
+      description: desc.charAt(0).toUpperCase() + desc.slice(1) + '.',
+    });
+  }
+  if (entries.length === 0) throw new Error('README.md: used-by block parsed to zero entries');
+
+  await writeOut('src/data/used-by.json', JSON.stringify({ entries }, null, 2) + '\n');
+}
+
 async function syncVersion() {
   const releasesPage = `https://github.com/${REPO}/releases`;
   let tag = null, url = releasesPage;
@@ -94,5 +119,6 @@ async function syncVersion() {
 }
 
 await syncDocs();
+await syncUsedBy();
 await syncVersion();
 console.log('sync-docs: done');

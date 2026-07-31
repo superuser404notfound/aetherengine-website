@@ -7,6 +7,7 @@ node_modules/
 src/content/docs/reference/
 src/content/docs/project/changelog.md
 src/data/version.json
+src/data/used-by.json
 
 # os
 .DS_Store
