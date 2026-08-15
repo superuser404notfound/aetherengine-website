@@ -12,6 +12,8 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
 // source file -> { out, title, description }
 const DOCS = [
+  { src: 'docs/api.md', out: 'src/content/docs/reference/api.md',
+    title: 'API reference', description: 'Every public surface a host consumes, and the contracts that require the host to act.' },
   { src: 'docs/formats.md', out: 'src/content/docs/reference/formats.md',
     title: 'Formats & codecs', description: 'Container and codec coverage, HDR signaling, audio bridging, subtitles, frames, disc, and edge cases.' },
   { src: 'docs/architecture.md', out: 'src/content/docs/reference/architecture.md',
@@ -25,9 +27,11 @@ const DOCS = [
 // Rewrite repo-relative links to internal Starlight routes. Order matters:
 // longer paths first so docs/formats.md is hit before formats.md.
 const LINK_RULES = [
+  [/\((?:\.\.\/)?docs\/api\.md/g, '(/reference/api/'],
   [/\((?:\.\.\/)?docs\/formats\.md/g, '(/reference/formats/'],
   [/\((?:\.\.\/)?docs\/architecture\.md/g, '(/reference/architecture/'],
   [/\((?:\.\.\/)?docs\/cli\.md/g, '(/reference/cli/'],
+  [/\(api\.md/g, '(/reference/api/'],
   [/\(formats\.md/g, '(/reference/formats/'],
   [/\(architecture\.md/g, '(/reference/architecture/'],
   [/\(cli\.md/g, '(/reference/cli/'],

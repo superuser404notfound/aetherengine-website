@@ -31,6 +31,7 @@ export default defineConfig({
         {
           label: 'Reference',
           items: [
+            { slug: 'reference/api' },
             { slug: 'reference/formats' },
             { slug: 'reference/architecture' },
             { slug: 'reference/cli' },
