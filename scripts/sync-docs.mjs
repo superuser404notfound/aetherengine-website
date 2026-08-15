@@ -36,6 +36,10 @@ const LINK_RULES = [
   [/\(architecture\.md/g, '(/reference/architecture/'],
   [/\(cli\.md/g, '(/reference/cli/'],
   [/\((?:\.\.\/)?CHANGELOG\.md/g, '(/project/changelog/'],
+  // Repo paths that have no page here (samples, sources, tests). They are correct
+  // relative links on GitHub, so point at the file there rather than dropping them;
+  // the link validator rejects any relative link that resolves to no route.
+  [/\((?:\.\.\/)?((?:Examples|Sources|Tests)\/[^)\s]+)\)/g, `(https://github.com/${REPO}/blob/main/$1)`],
   // README section anchors that live on their own pages here. Must precede
   // the generic README rule so the whole "README.md#anchor" is consumed.
   [/\((?:\.\.\/)?README\.md#stability-and-versioning/g, '(/project/stability-versioning/'],
