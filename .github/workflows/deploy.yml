@@ -15,6 +15,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      no_cache:
+        description: "Rebuild without the layer cache (the sync fetch re-runs)"
+        type: boolean
+        default: false
   repository_dispatch:
     types: [engine-docs-updated]
   schedule:
@@ -84,5 +89,9 @@ jobs:
             ENGINE_SHA=${{ steps.engine.outputs.sha }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          # The sync layer is keyed on ENGINE_SHA, so a run that fetched a stale
+          # raw.githubusercontent copy under that same SHA stays cached forever.
+          # A manual run can bypass it.
+          no-cache: ${{ github.event.inputs.no_cache == 'true' }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
