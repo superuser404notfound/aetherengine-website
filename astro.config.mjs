@@ -14,6 +14,7 @@ export default defineConfig({
       customCss: ['./src/styles/custom.css'],
       social: [
         { icon: 'github', label: 'GitHub', href: 'https://github.com/superuser404notfound/AetherEngine' },
+        { icon: 'discord', label: 'Discord', href: 'https://discord.gg/P7NvpzNqnG' },
       ],
       head: [
         { tag: 'meta', attrs: { property: 'og:image', content: 'https://aetherengine.superuser404.de/og.png' } },
