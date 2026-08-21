@@ -16,7 +16,7 @@ Deutschland
 
 ## Kontakt
 
-E-Mail: [superuser404@tuta.com](mailto:superuser404@tuta.com)
+E-Mail: [superuser404@mailbox.org](mailto:superuser404@mailbox.org)
 
 ## Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV
 
