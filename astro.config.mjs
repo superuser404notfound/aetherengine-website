@@ -43,6 +43,7 @@ export default defineConfig({
             { slug: 'project/stability-versioning' },
             { slug: 'project/changelog' },
             { slug: 'project/license' },
+            { slug: 'project/imprint' },
           ],
         },
       ],
