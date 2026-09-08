@@ -3,7 +3,7 @@
 // release tag, and mirrors the README's Used by list.
 // Run via `npm run sync` (wired as predev + prebuild).
 import { mkdir, writeFile } from 'node:fs/promises';
-import { dirname, resolve } from 'node:path';
+import { dirname, posix, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const REPO = 'superuser404notfound/AetherEngine';
@@ -36,10 +36,6 @@ const LINK_RULES = [
   [/\(architecture\.md/g, '(/reference/architecture/'],
   [/\(cli\.md/g, '(/reference/cli/'],
   [/\((?:\.\.\/)?CHANGELOG\.md/g, '(/project/changelog/'],
-  // Repo paths that have no page here (samples, sources, tests). They are correct
-  // relative links on GitHub, so point at the file there rather than dropping them;
-  // the link validator rejects any relative link that resolves to no route.
-  [/\((?:\.\.\/)?((?:Examples|Sources|Tests)\/[^)\s]+)\)/g, `(https://github.com/${REPO}/blob/main/$1)`],
   // README section anchors that live on their own pages here. Must precede
   // the generic README rule so the whole "README.md#anchor" is consumed.
   [/\((?:\.\.\/)?README\.md#stability-and-versioning/g, '(/project/stability-versioning/'],
@@ -51,10 +47,28 @@ function stripLeadingH1(md) {
   return md.replace(/^\s*#\s+.*\r?\n+/, '');
 }
 
-function rewriteLinks(md) {
+// Everything still repo-relative after LINK_RULES points at a file this site does not
+// publish: a sample, a source file, a regression note. It is a correct relative link on
+// GitHub, so send the reader there instead of dropping it. This is a fallback and not a
+// list on purpose. starlight-links-validator fails the whole build on one relative link
+// that resolves to no route, and it runs in this repo AFTER the push that caused it, so
+// a per-path rule means the next unlisted file breaks the deploy again (Examples/,
+// Sources/ and Tests/ were that list; docs/partial-composition-regression.md was the
+// next file). Typos cannot hide behind this: AetherEngine's Scripts/check-doc-links.py
+// proves every relative target exists in the repo before the merge.
+function toRepoFileURL(srcPath, target) {
+  const [path, hash] = target.split('#');
+  const abs = posix.normalize(posix.join(posix.dirname(srcPath), path));
+  return `https://github.com/${REPO}/blob/main/${abs}${hash ? `#${hash}` : ''}`;
+}
+
+function rewriteLinks(md, srcPath) {
   let out = md;
   for (const [re, repl] of LINK_RULES) out = out.replace(re, repl);
-  return out;
+  // Link targets only: an absolute URL, an internal route (/...) and a same-page
+  // anchor (#...) are all already resolvable and stay untouched.
+  return out.replace(/\]\((?![a-zA-Z][a-zA-Z0-9+.-]*:|\/|#)([^)\s]+)\)/g,
+    (_, target) => `](${toRepoFileURL(srcPath, target)})`);
 }
 
 function frontmatter(title, description) {
@@ -78,7 +92,7 @@ async function writeOut(relPath, content) {
 async function syncDocs() {
   for (const d of DOCS) {
     const raw = await fetchText(`${RAW}/${d.src}`); // throws -> fatal
-    const body = rewriteLinks(stripLeadingH1(raw));
+    const body = rewriteLinks(stripLeadingH1(raw), d.src);
     await writeOut(d.out, frontmatter(d.title, d.description) + body);
   }
 }
