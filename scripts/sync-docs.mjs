@@ -39,6 +39,10 @@ const LINK_RULES = [
   // README section anchors that live on their own pages here. Must precede
   // the generic README rule so the whole "README.md#anchor" is consumed.
   [/\((?:\.\.\/)?README\.md#stability-and-versioning/g, '(/project/stability-versioning/'],
+  // Any other README section is not on this site (the introduction is written here, not
+  // synced), so the anchor only exists on GitHub. Sending it to the introduction failed the
+  // build on "README.md#package-traits" as an invalid hash.
+  [/\((?:\.\.\/)?README\.md#/g, '(https://github.com/superuser404notfound/AetherEngine#'],
   [/\((?:\.\.\/)?README\.md/g, '(/guides/introduction/'],
 ];
 
