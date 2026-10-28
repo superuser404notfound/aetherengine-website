@@ -18,6 +18,7 @@ On Apple platforms the real choice is between AVPlayer, with deep OS integration
 | **Hardware decode** | VideoToolbox, dav1d SW fallback | VideoToolbox, FFmpeg SW fallback | VideoToolbox | VideoToolbox plus software | VideoToolbox plus software |
 | **Dolby Vision** | P5, P7 as 8.1, P8.1, P8.4, AV1 P10.x, real display switch | P5, P8 via AVPlayer, paid LGPL tier | P5 and P8.1 only | Tone-maps, no DV display | Tone-maps, no DV display |
 | **Dolby Atmos** | EAC3+JOC stream-copied (HDMI MAT, spatial) | EAC3+JOC via AVPlayer, paid LGPL tier | EAC3+JOC passthrough | Decodes to PCM, no object passthrough | No Atmos passthrough on Apple |
+| **TrueHD / DTS:X heights** | Objects and height channels rendered into a speaker bed (up to 9.1.6), delivered as lossless 24-bit PCM, APAC on AirPlay (optional components) | 7.1 core (FFmpeg decode) | Not played | 7.1 core | 7.1 core |
 | **HDR on tvOS** | Native Match Content switch | Native Match Content on AVPlayer path, else Metal tone-map | Native Match Content | Software tone-mapping | Software tone-mapping |
 | **Rendering & UI** | OS-native, you ship SwiftUI | Own Metal renderer, bundled controls | OS-native, you ship UI | Own renderer, bundled controls | Own renderer, bundled OSC |
 | **Apple TV / App Store** | Yes, LGPL plus store exception | Free tier GPL, DV / Atmos / MKV need paid LGPL | Yes | Yes, LGPL | Not practical, GPL, no tvOS |

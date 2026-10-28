@@ -44,6 +44,9 @@ Shipping something on AetherEngine? [Submit it](https://github.com/superuser404n
   <Card title="Dolby Atmos" icon="seti:audio">
     EAC3+JOC stream-copied on every route (HDMI MAT 2.0, AirPods spatial, Bluetooth downmix), plus 5.1 / 7.1 surround with correct channel layout.
   </Card>
+  <Card title="Lossless height channels" icon="seti:audio">
+    TrueHD and DTS:X object audio rendered into a speaker bed up to 9.1.6 and delivered as lossless 24-bit PCM, or APAC over AirPlay (optional components).
+  </Card>
   <Card title="Broad codec coverage" icon="seti:default">
     H.264, HEVC, and AV1 via VideoToolbox; AV1 without hardware, VP9, MPEG-2, and VC-1 via the software dav1d path. MKV, MP4, WebM, MPEG-TS, AVI, and more.
   </Card>
@@ -69,6 +72,7 @@ On Apple platforms the real choice is between AVPlayer, with deep OS integration
 | **Hardware decode** | VideoToolbox, dav1d SW fallback | VideoToolbox, FFmpeg SW fallback | VideoToolbox | VideoToolbox plus software | VideoToolbox plus software |
 | **Dolby Vision** | P5, P7 as 8.1, P8.1, P8.4, AV1 P10.x, real display switch | P5, P8 via AVPlayer; their matrix lists P5 HDR display without overheating as paid LGPL | P5 and P8.1 only | Tone-maps, no DV display | Tone-maps, no DV display |
 | **Dolby Atmos** | EAC3+JOC stream-copied (HDMI MAT, spatial) | EAC3+JOC via AVPlayer | EAC3+JOC passthrough | Decodes to PCM, no object passthrough | No Atmos passthrough on Apple |
+| **TrueHD / DTS:X heights** | Objects and height channels rendered into a speaker bed (up to 9.1.6), delivered as lossless 24-bit PCM, APAC on AirPlay (optional components) | 7.1 core (FFmpeg decode) | Not played | 7.1 core | 7.1 core |
 | **HDR on tvOS** | Native Match Content switch | Native Match Content on AVPlayer path, else Metal tone-map | Native Match Content | Software tone-mapping | Software tone-mapping |
 | **Rendering & UI** | OS-native, you ship SwiftUI | Own Metal renderer, bundled controls | OS-native, you ship UI | Own renderer, bundled controls | Own renderer, bundled OSC |
 | **Apple TV / App Store** | Yes, LGPL plus store exception | Free build GPL, paid LGPL tier for AV1 hardware decode and the full decoder set | Yes | Yes, LGPL | Not practical, GPL, no tvOS |
