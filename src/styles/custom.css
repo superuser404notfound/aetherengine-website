@@ -38,8 +38,15 @@
 }
 .landing-meta .version-pill { margin-top: 0; }
 /* On phones the hero is centered, so the meta row under it is too. */
+.landing-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+}
+/* On phones the hero is centered: the version on its own line, the facts under it. */
 @media (max-width: 50rem) {
-  .landing-meta { justify-content: center; text-align: center; }
+  .landing-meta { flex-direction: column; text-align: center; }
+  .landing-facts { justify-content: center; }
 }
 [data-has-hero] .hero { padding-bottom: 1rem; }
 
