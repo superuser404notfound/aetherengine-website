@@ -37,6 +37,10 @@
   font-size: 0.9rem;
 }
 .landing-meta .version-pill { margin-top: 0; }
+/* On phones the hero is centered, so the meta row under it is too. */
+@media (max-width: 50rem) {
+  .landing-meta { justify-content: center; text-align: center; }
+}
 [data-has-hero] .hero { padding-bottom: 1rem; }
 
 .landing-why {
