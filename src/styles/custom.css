@@ -37,7 +37,6 @@
   font-size: 0.9rem;
 }
 .landing-meta .version-pill { margin-top: 0; }
-/* On phones the hero is centered, so the meta row under it is too. */
 .landing-facts {
   display: flex;
   flex-wrap: wrap;
