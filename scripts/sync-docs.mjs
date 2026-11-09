@@ -7,11 +7,18 @@ import { dirname, posix, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const REPO = 'superuser404notfound/AetherEngine';
-const RAW = `https://raw.githubusercontent.com/${REPO}/main`;
+// AETHERENGINE_REF lets a local run preview an engine branch before it reaches main.
+const RAW = `https://raw.githubusercontent.com/${REPO}/${process.env.AETHERENGINE_REF ?? 'main'}`;
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
 // source file -> { out, title, description }
 const DOCS = [
+  { src: 'docs/installation.md', out: 'src/content/docs/guides/installation.md',
+    title: 'Installation', description: 'Add the package, requirements, optional components, privacy manifest and versioning.' },
+  { src: 'docs/guide.md', out: 'src/content/docs/guides/host-guide.md',
+    title: 'Host guide', description: 'Build a player: loading, state, tracks, subtitles, live TV, tvOS setup and logging.' },
+  { src: 'docs/features.md', out: 'src/content/docs/guides/features.md',
+    title: 'Features', description: 'What the engine plays and does, area by area.' },
   { src: 'docs/api.md', out: 'src/content/docs/reference/api.md',
     title: 'API reference', description: 'Every public surface a host consumes, and the contracts that require the host to act.' },
   { src: 'docs/formats.md', out: 'src/content/docs/reference/formats.md',
@@ -20,6 +27,12 @@ const DOCS = [
     title: 'Architecture', description: 'The three playback pipelines, the source-file map, and the dependency surface.' },
   { src: 'docs/cli.md', out: 'src/content/docs/reference/cli.md',
     title: 'aetherctl CLI', description: 'The standalone macOS repro CLI shipped alongside the library.' },
+  { src: 'docs/dolby-vision-fel.md', out: 'src/content/docs/reference/dolby-vision-fel.md',
+    title: 'Dolby Vision FEL', description: 'How Dolby Vision Profile 7 FEL is played: the curve fold and the dual-layer route.' },
+  { src: 'docs/comparison.md', out: 'src/content/docs/project/comparison.md',
+    title: 'How it compares', description: 'AetherEngine next to AVPlayer, KSPlayer, VLCKit and libmpv, with measurements.' },
+  { src: 'docs/licensing.md', out: 'src/content/docs/project/license.md',
+    title: 'Licensing', description: 'What an app has to do to ship the engine and each of its dependencies.' },
   { src: 'CHANGELOG.md', out: 'src/content/docs/project/changelog.md',
     title: 'Changelog', description: 'Per-release history of AetherEngine.' },
 ];
@@ -31,14 +44,27 @@ const LINK_RULES = [
   [/\((?:\.\.\/)?docs\/formats\.md/g, '(/reference/formats/'],
   [/\((?:\.\.\/)?docs\/architecture\.md/g, '(/reference/architecture/'],
   [/\((?:\.\.\/)?docs\/cli\.md/g, '(/reference/cli/'],
+  [/\((?:\.\.\/)?docs\/dolby-vision-fel\.md/g, '(/reference/dolby-vision-fel/'],
+  [/\((?:\.\.\/)?docs\/installation\.md/g, '(/guides/installation/'],
+  [/\((?:\.\.\/)?docs\/guide\.md/g, '(/guides/host-guide/'],
+  [/\((?:\.\.\/)?docs\/features\.md/g, '(/guides/features/'],
+  [/\((?:\.\.\/)?docs\/comparison\.md/g, '(/project/comparison/'],
+  [/\((?:\.\.\/)?docs\/licensing\.md/g, '(/project/license/'],
   [/\(api\.md/g, '(/reference/api/'],
   [/\(formats\.md/g, '(/reference/formats/'],
   [/\(architecture\.md/g, '(/reference/architecture/'],
   [/\(cli\.md/g, '(/reference/cli/'],
+  [/\(dolby-vision-fel\.md/g, '(/reference/dolby-vision-fel/'],
+  [/\(installation\.md/g, '(/guides/installation/'],
+  [/\(guide\.md/g, '(/guides/host-guide/'],
+  [/\(features\.md/g, '(/guides/features/'],
+  [/\(comparison\.md/g, '(/project/comparison/'],
+  [/\(licensing\.md/g, '(/project/license/'],
   [/\((?:\.\.\/)?CHANGELOG\.md/g, '(/project/changelog/'],
   // README section anchors that live on their own pages here. Must precede
   // the generic README rule so the whole "README.md#anchor" is consumed.
-  [/\((?:\.\.\/)?README\.md#stability-and-versioning/g, '(/project/stability-versioning/'],
+  [/\((?:\.\.\/)?README\.md#stability-and-versioning/g, '(/guides/installation/#stability-and-versioning'],
+  [/\((?:\.\.\/)?README\.md#optional-components/g, '(/guides/installation/#optional-components'],
   // Any other README section is not on this site (the introduction is written here, not
   // synced), so the anchor only exists on GitHub. Sending it to the introduction failed the
   // build on "README.md#package-traits" as an invalid hash.

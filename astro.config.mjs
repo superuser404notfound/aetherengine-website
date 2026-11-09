@@ -25,8 +25,9 @@ export default defineConfig({
           label: 'Guides',
           items: [
             { slug: 'guides/introduction' },
-            { slug: 'guides/quick-start' },
             { slug: 'guides/installation' },
+            { slug: 'guides/host-guide' },
+            { slug: 'guides/features' },
           ],
         },
         {
@@ -36,12 +37,13 @@ export default defineConfig({
             { slug: 'reference/formats' },
             { slug: 'reference/architecture' },
             { slug: 'reference/cli' },
+            { slug: 'reference/dolby-vision-fel' },
           ],
         },
         {
           label: 'Project',
           items: [
-            { slug: 'project/stability-versioning' },
+            { slug: 'project/comparison' },
             { slug: 'project/changelog' },
             { slug: 'project/license' },
             { slug: 'project/imprint' },
