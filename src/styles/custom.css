@@ -36,7 +36,8 @@
   color: var(--sl-color-gray-3);
   font-size: 0.9rem;
 }
-.landing-meta .version-pill { margin-top: 0; }
+/* Starlight spaces every following content element; inside this row the flex gap does it. */
+.landing-meta > * { margin-top: 0; }
 .landing-facts {
   display: flex;
   flex-wrap: wrap;
