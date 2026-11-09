@@ -4,6 +4,11 @@ import starlightLinksValidator from 'starlight-links-validator';
 
 export default defineConfig({
   site: 'https://aetherengine.superuser404.de',
+  // Pages retired when the engine docs took over; keep old links working.
+  redirects: {
+    '/guides/quick-start/': '/guides/host-guide/',
+    '/project/stability-versioning/': '/guides/installation/#stability-and-versioning',
+  },
   integrations: [
     starlight({
       title: 'AetherEngine',
