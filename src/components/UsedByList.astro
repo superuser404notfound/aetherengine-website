@@ -1,0 +1,10 @@
+---
+import usedBy from '../data/used-by.json';
+const apps = usedBy.entries;
+---
+<p class="usedby-count">{apps.length} apps ship on AetherEngine today.</p>
+<ul class="usedby-list">
+  {apps.map((app) => (
+    <li><a href={app.url} title={app.description}>{app.name}</a></li>
+  ))}
+</ul>

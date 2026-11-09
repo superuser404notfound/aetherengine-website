@@ -26,3 +26,62 @@
 .version-pill:hover {
   border-color: var(--sl-color-accent);
 }
+
+/* Landing page. */
+.landing-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  color: var(--sl-color-gray-3);
+  font-size: 0.9rem;
+}
+.landing-meta .version-pill { margin-top: 0; }
+[data-has-hero] .hero { padding-bottom: 1rem; }
+
+.landing-why {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 1rem;
+}
+.landing-why > div {
+  margin: 0;
+  padding: 1rem 1.25rem;
+  border-left: 3px solid var(--sl-color-accent);
+  background: var(--sl-color-gray-6);
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+.landing-why h3 {
+  margin: 0 0 0.35rem;
+  font-size: var(--sl-text-lg);
+}
+.landing-why p { margin: 0; color: var(--sl-color-gray-2); }
+
+.usedby-count { color: var(--sl-color-gray-3); }
+.usedby-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0;
+  list-style: none;
+}
+.usedby-list li { margin: 0; }
+.usedby-list a {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 999px;
+  color: var(--sl-color-white);
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+.usedby-list a:hover {
+  border-color: var(--sl-color-accent);
+  color: var(--sl-color-accent-high);
+}
+
+/* The landing comparison table has four columns; keep it inside a phone's width. */
+@media (max-width: 50rem) {
+  [data-has-hero] table { font-size: 0.85rem; }
+  [data-has-hero] table :is(th, td) { padding: 0.4rem 0.45rem; }
+}

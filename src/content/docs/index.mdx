@@ -1,17 +1,21 @@
 ---
 title: AetherEngine
-description: A media player engine for Apple platforms. FFmpeg demuxes, VideoToolbox decodes, AVPlayer handles Dolby Atmos.
+description: A video and audio player engine for iOS, tvOS, macOS and visionOS. Plays almost anything, with Apple's own HDR, Dolby Vision and Dolby Atmos.
 template: splash
 hero:
-  tagline: A media player engine for Apple platforms. FFmpeg demuxes, VideoToolbox decodes, AVPlayer handles Dolby Atmos.
+  title: AetherEngine
+  tagline: Play almost any video on Apple devices, with Apple's own HDR, Dolby Vision and Dolby Atmos. You build the app, the engine does the hard part.
   image:
     file: ../../assets/logo.png
     alt: AetherEngine
   actions:
     - text: Get started
-      link: /guides/introduction/
+      link: /guides/installation/
       icon: right-arrow
-    - text: View on GitHub
+    - text: Host guide
+      link: /guides/host-guide/
+      variant: secondary
+    - text: GitHub
       link: https://github.com/superuser404notfound/AetherEngine
       icon: external
       variant: minimal
@@ -19,56 +23,110 @@ hero:
 
 import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 import VersionPill from '../../components/VersionPill.astro';
-import usedBy from '../../data/used-by.json';
+import UsedByList from '../../components/UsedByList.astro';
 
-<VersionPill />
+<div class="landing-meta">
+  <VersionPill />
+  <span>iOS · tvOS · macOS · visionOS</span>
+  <span>Swift Package</span>
+  <span>LGPL-3.0, App Store friendly</span>
+</div>
 
-## Used by
+## Why AetherEngine
 
-Apps shipping AetherEngine today:
+<div class="landing-why">
+  <div>
+    <h3>Plays nearly everything</h3>
+    <p>MKV, MP4, AVI, WMV, MPEG-TS, DVD and Blu-ray ISOs, and every codec FFmpeg knows.</p>
+  </div>
+  <div>
+    <h3>Keeps Apple's picture and sound</h3>
+    <p>Hardware decoding, the real Dolby Vision display switch and Dolby Atmos passthrough, the way Apple's own player does it.</p>
+  </div>
+  <div>
+    <h3>You own the UI</h3>
+    <p>One view and a few <code>async</code> methods. No built-in controls, no analytics. Nothing leaves the device.</p>
+  </div>
+</div>
 
-<CardGrid>
-  {usedBy.entries.map((app) => (
-    <LinkCard title={app.name} href={app.url} description={app.description} />
-  ))}
-</CardGrid>
+## A player in a few lines
 
-Shipping something on AetherEngine? [Submit it](https://github.com/superuser404notfound/AetherEngine/issues/new?template=used-by-submission.yml) to get listed here and in the README.
+```swift
+// Package.swift
+.package(url: "https://github.com/superuser404notfound/AetherEngine", from: "7.62.0")
+```
+
+```swift
+import AetherEngine
+import SwiftUI
+
+let player = try AetherEngine()
+
+struct PlayerView: View {
+    var body: some View { AetherPlayerSurface(engine: player) }
+}
+
+try await player.load(url: videoURL)
+player.play()
+```
+
+The [host guide](/guides/host-guide/) takes it from here: tracks, subtitles, live TV and the tvOS setup.
 
 ## What it handles
 
 <CardGrid>
-  <Card title="Real HDR & Dolby Vision" icon="seti:video">
-    HDR10, HDR10+ (per-frame ST 2094-40), Dolby Vision (P5, P7 as single-layer 8.1, P8.1, P8.4, AV1 P10.x), and HLG, with full metadata and automatic Match Content.
+  <Card title="HDR and Dolby Vision" icon="seti:video">
+    HDR10, HDR10+, HLG and Dolby Vision Profiles 5, 7, 8 and AV1 Profile 10, with Match Content on Apple TV. [More](/guides/features/#hdr-and-dolby-vision)
   </Card>
-  <Card title="Dolby Atmos" icon="seti:audio">
-    EAC3+JOC stream-copied on every route (HDMI MAT 2.0, AirPods spatial, Bluetooth downmix), plus 5.1 / 7.1 surround with correct channel layout.
+  <Card title="Dolby Atmos and height channels" icon="seti:audio">
+    E-AC-3 Atmos passed through to receivers and AirPods. Lossless height channels from TrueHD and DTS:X as an option. [More](/guides/features/#dolby-atmos)
   </Card>
-  <Card title="Lossless height channels" icon="seti:audio">
-    TrueHD and DTS:X object audio rendered into a speaker bed up to 9.1.6 and delivered as lossless 24-bit PCM, or APAC over AirPlay (optional components).
+  <Card title="Every format" icon="seti:default">
+    Hardware decode for H.264, HEVC and AV1, software decode for everything else. Files, discs and on-demand DASH. [More](/guides/features/#video)
   </Card>
-  <Card title="Broad codec coverage" icon="seti:default">
-    H.264, HEVC and AV1 in hardware through VideoToolbox. AV1 without hardware, VP9, MPEG-2, VC-1 and everything else FFmpeg knows through the software path (dav1d, libavcodec). MKV, MP4, WebM, MPEG-TS, AVI, DVD and Blu-ray ISOs, and more.
+  <Card title="Subtitles of every kind" icon="document">
+    Text, ASS, PGS, DVB, DVD, teletext and closed captions, external files, and subtitles that survive Picture in Picture and AirPlay. [More](/guides/features/#subtitles)
   </Card>
-  <Card title="Audio-only path" icon="seti:audio">
-    A lean pipeline with no video machinery and system Now-Playing on tvOS and iOS, driven by a single LoadOptions flag.
+  <Card title="Live TV and DVR" icon="seti:clock">
+    HLS ingest, timeshift, recording over the same connection, and recovery when a channel breaks. [More](/guides/features/#live-tv-and-dvr)
   </Card>
-  <Card title="Live TV & DVR" icon="seti:clock">
-    Unbounded live with optional timeshift, and direct HLS ingest with AES-128 clear-key and SSAI ad-pod handling.
-  </Card>
-  <Card title="You ship the UI" icon="seti:plan">
-    No AVPlayerViewController, no opinionated controls, no analytics. Bind the view, call play(), read the published state.
+  <Card title="Any source" icon="seti:folder">
+    URLs, your own byte reader, SMB shares, and servers with self-signed certificates. [More](/guides/features/#inputs-custom-readers-smb-certificates)
   </Card>
 </CardGrid>
 
 ## How it compares
 
-AVPlayer has the best OS integration but plays only Apple's formats. VLCKit and libmpv play almost everything but bypass Apple's Dolby Vision, Atmos and HDR handling. AetherEngine combines both: FFmpeg's format coverage on top of VideoToolbox and AVPlayer, so Dolby Vision, Atmos and Match Content keep working.
+| | AetherEngine | AVPlayer | VLC / mpv |
+| --- | --- | --- | --- |
+| **Formats** | Nearly all | Apple's only | Nearly all |
+| **Dolby Vision display** | Yes | Partly | No |
+| **Atmos passthrough** | Yes | Yes | No |
+| **Your own UI** | Yes | Yes | No |
+| **App Store** | Yes | Yes | VLC only |
 
-[Feature table and measurements](/project/comparison/) against AVPlayer, KSPlayer, VLCKit and libmpv.
+Full table with KSPlayer, and power, CPU and memory measurements: [How it compares](/project/comparison/).
+
+## Used by
+
+<UsedByList />
+
+Shipping something on AetherEngine? [Submit it](https://github.com/superuser404notfound/AetherEngine/issues/new?template=used-by-submission.yml) to get listed here and in the README.
 
 ## Just want to watch?
 
-AetherEngine is the engine, not an app. If you are here to actually watch something, [Sodalite](https://sodalite.superuser404.de) is the native Apple TV client for Jellyfin built on top of it. This site is for developers integrating the engine.
+AetherEngine is an engine for developers, not an app. To watch something, try one of the apps built on it:
 
-[Read the introduction](/guides/introduction/) to get started.
+<CardGrid>
+  <LinkCard title="Sodalite" href="https://sodalite.superuser404.de" description="Native Jellyfin client for Apple TV, iPhone and iPad." />
+  <LinkCard title="AetherPlayer" href="https://github.com/superuser404notfound/AetherPlayer" description="Native media player for the Mac." />
+</CardGrid>
+
+## Next steps
+
+<CardGrid>
+  <LinkCard title="Installation" href="/guides/installation/" description="Add the package and pick optional components." />
+  <LinkCard title="Host guide" href="/guides/host-guide/" description="Build your first player, then live TV and tvOS setup." />
+  <LinkCard title="API reference" href="/reference/api/" description="Every public API and the contracts your app answers." />
+  <LinkCard title="Features" href="/guides/features/" description="Everything the engine plays and does." />
+</CardGrid>
