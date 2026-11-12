@@ -41,6 +41,9 @@ export default defineConfig({
             { slug: 'reference/api' },
             { slug: 'reference/formats' },
             { slug: 'reference/architecture' },
+            { slug: 'reference/architecture-native' },
+            { slug: 'reference/architecture-software' },
+            { slug: 'reference/source-map' },
             { slug: 'reference/cli' },
             { slug: 'reference/dolby-vision-fel' },
           ],
@@ -49,6 +52,7 @@ export default defineConfig({
           label: 'Project',
           items: [
             { slug: 'project/comparison' },
+            { slug: 'project/measurements' },
             { slug: 'project/changelog' },
             { slug: 'project/license' },
             { slug: 'project/imprint' },
